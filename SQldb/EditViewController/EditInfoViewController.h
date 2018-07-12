@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol EditInfoViewControllerDelegate
-- (void) editingInfoWasFinished;
+- (void) editingInfoWasFinishedWithIDofNewElement;
 @end
 
 @interface EditInfoViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>

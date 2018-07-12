@@ -50,7 +50,7 @@
         
         //Check if an error ucured and display it
         if(error != nil) {
-            NSLog(@"%@",[error localizedDescription]);
+            NSLog(@"1.%@",[error localizedDescription]);
         }
     }
 }
@@ -79,7 +79,7 @@
     self.arrColumnNames = [NSMutableArray array];
 
     //Open db
-    BOOL openDatabaseResult = sqlite3_open([databasePath UTF8String], &sqlite3Database);
+//    BOOL openDatabaseResult = sqlite3_open([databasePath UTF8String], &sqlite3Database);
 //    sqlite3_open(<#const char *filename#>, <#sqlite3 **ppDb#>)
     BOOL open_v2 = sqlite3_open_v2([databasePath UTF8String], &sqlite3Database, SQLITE_OPEN_READWRITE, NULL);
     if(open_v2 == SQLITE_OK) {

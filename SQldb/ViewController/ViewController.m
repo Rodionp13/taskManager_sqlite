@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "MyFirstDBManager.h"
 
-//static NSString * dbName = @"MYTasks.db";
+static NSString * const myCellId = @"idCellTask";
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -17,8 +17,9 @@
 @property (strong, nonatomic) NSArray *tasksArr;
 @property (assign, nonatomic) int idToEdit;
 
-- (void)loadData;
+- (IBAction)massDelete:(id)sender;
 - (IBAction)addNewTask:(id)sender;
+- (void)loadData;
 @end
 
 @implementation ViewController
@@ -30,6 +31,7 @@
     
     [[self tableView] setDataSource:self];
     [[self tableView] setDelegate:self];
+    
     [self loadData];
 }
 
@@ -38,45 +40,44 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellID = @"idCellRecord";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+    ViewControllerCell *cell = [tableView dequeueReusableCellWithIdentifier:myCellId forIndexPath:indexPath];
+    
     NSArray *columnNames = self.dbManager.arrColumnNames;
     NSInteger indexOfTitle = [columnNames indexOfObject:@"title"];
     NSInteger indexOfDate = [columnNames indexOfObject:@"date"];
     
     NSString *labelText = [NSString stringWithFormat:@"%@", [self.tasksArr objectAtIndex:indexPath.row][indexOfTitle]];
     NSString *subtitleText = [NSString stringWithFormat:@"Date %@", [self.tasksArr objectAtIndex:indexPath.row][indexOfDate]];
-    cell.textLabel.text = labelText;
-    cell.detailTextLabel.text = subtitleText;
-//    UIButton *bttn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [bttn setFrame:CGRectMake(0, 0, 50, 50)];
-//    [bttn setCenter:cell.center];
-//    [bttn setBackgroundColor:UIColor.redColor];
-//    [bttn addTarget:self action:@selector(bttnTapped:) forControlEvents:UIControlEventTouchUpInside];
-//    [cell addSubview:bttn];
     
+    cell.titleLbl.text = labelText;
+    cell.dateLbl.text = subtitleText;
+    [cell setUpPriorityBttn:self.tasksArr columnName:self.dbManager.arrColumnNames indexPath:indexPath];
     return cell;
 }
 
-//- (void)bttnTapped:(UIButton *)sender {
-//    if([sender backgroundColor] == UIColor.redColor) {
-//        [sender setBackgroundColor:UIColor.greenColor];
-//        [sender setFrame:CGRectMake(sender.frame.origin.x, sender.frame.origin.y, 100, sender.frame.size.height)];
-//    } else {
-//        [sender setBackgroundColor:UIColor.redColor];
-//        [sender setFrame:CGRectMake(0, 0, 50, 50)];
-//    }
-//}
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     self.idToEdit = [[[self.tasksArr objectAtIndex:indexPath.row] objectAtIndex:0] intValue];
-    NSInteger num = self.idToEdit;
     [self performSegueWithIdentifier:@"idSegueEditInfo" sender:self];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(editingStyle == UITableViewCellEditingStyleDelete) {
+        int taskId = [NSNumber numberWithUnsignedInteger:[[self.dbManager arrColumnNames] indexOfObject:@"taskID"]].intValue;
+        int taskIdToDELETE = [[[self.tasksArr objectAtIndex:indexPath.row] objectAtIndex:taskId] intValue];
+        NSLog(@"%d", taskIdToDELETE);
+        NSString *query = [NSString stringWithFormat:@"delete from myTasks where taskID=%d", taskIdToDELETE];
+        [self.dbManager executeQuery:query];
+        
+        //reload tableView
+        [self loadData];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
 }
+
 
 
 - (void)loadData {
@@ -92,20 +93,41 @@
 }
 
 
+- (IBAction)massDelete:(id)sender {
+    NSString *deleteQuery = [NSString stringWithFormat:@"delete from myTasks"];
+    NSString *fetchQuery = [NSString stringWithFormat:@"select * from myTasks"];
+    if([self.tasksArr count] != 0) {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete All Tasks" message:@"All tips will be removed from you store" preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Delete All Tasks" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
+        [self.dbManager executeQuery:deleteQuery];
+        NSArray *result = [self.dbManager loadDatatFromDB:fetchQuery];
+        [self setTasksArr:result];
+        [self.tableView reloadData];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Cencel" style:UIAlertActionStyleCancel handler:nil]];
+        
+        UIPopoverPresentationController *popoverController = alert.popoverPresentationController;
+        [popoverController setSourceView:self.view];
+        [popoverController setSourceRect:self.view.frame];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    NSLog(@"delete!!!");
+}
+
 - (IBAction)addNewTask:(id)sender {
+    //indicate that we are going to create a new task
     [self setIdToEdit:-1];
     NSLog(@"%d", self.idToEdit);
     NSString *identifite = @"idSegueEditInfo";
     [self performSegueWithIdentifier:identifite sender:self];
 }
 
-- (void)editingInfoWasFinished {
+- (void)editingInfoWasFinishedWithIDofNewElement {
     [self loadData];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     EditInfoViewController *editInfoVC = [segue destinationViewController];
-    NSInteger num = self.idToEdit;
     [editInfoVC setDelegate:self];
     [editInfoVC setIdToEdit:self.idToEdit];
 }

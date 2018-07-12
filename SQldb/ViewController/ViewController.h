@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EditInfoViewController.h"
+#import "ViewControllerCell.h"
 
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, EditInfoViewControllerDelegate>
 

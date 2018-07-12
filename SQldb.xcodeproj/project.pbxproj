@@ -19,6 +19,9 @@
 		CE66BBB820F4122E00B803DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE66BBB420F4122E00B803DD /* LaunchScreen.storyboard */; };
 		CE66BBB920F4122E00B803DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE66BBB620F4122E00B803DD /* Main.storyboard */; };
 		CEB14F3420F44A1D00383CBE /* myTasks.db in Resources */ = {isa = PBXBuildFile; fileRef = CEB14F3320F44A1C00383CBE /* myTasks.db */; };
+		CEE1393620F4A370005DC537 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE1393520F4A370005DC537 /* TableViewCell.m */; };
+		CEE1393920F4B596005DC537 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE1393820F4B596005DC537 /* DetailViewController.m */; };
+		CEE1393D20F4CA1E005DC537 /* ViewControllerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE1393C20F4CA1E005DC537 /* ViewControllerCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +64,12 @@
 		CE66BBB520F4122E00B803DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE66BBB720F4122E00B803DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CEB14F3320F44A1C00383CBE /* myTasks.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = myTasks.db; sourceTree = "<group>"; };
+		CEE1393420F4A370005DC537 /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
+		CEE1393520F4A370005DC537 /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
+		CEE1393720F4B596005DC537 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		CEE1393820F4B596005DC537 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		CEE1393B20F4CA1E005DC537 /* ViewControllerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewControllerCell.h; sourceTree = "<group>"; };
+		CEE1393C20F4CA1E005DC537 /* ViewControllerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewControllerCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +101,8 @@
 		CE66BB6920F410E300B803DD = {
 			isa = PBXGroup;
 			children = (
+				CEE1393420F4A370005DC537 /* TableViewCell.h */,
+				CEE1393520F4A370005DC537 /* TableViewCell.m */,
 				CE66BB7420F410E300B803DD /* SQldb */,
 				CE66BB8D20F410E600B803DD /* SQldbTests */,
 				CE66BB9820F410E600B803DD /* SQldbUITests */,
@@ -115,10 +126,9 @@
 			children = (
 				CE66BB7520F410E300B803DD /* AppDelegate.h */,
 				CE66BB7620F410E300B803DD /* AppDelegate.m */,
-				CE66BB7820F410E300B803DD /* ViewController.h */,
-				CE66BB7920F410E300B803DD /* ViewController.m */,
-				CE66BBAD20F4116100B803DD /* EditInfoViewController.h */,
-				CE66BBAA20F4116100B803DD /* EditInfoViewController.m */,
+				CECBB76920F76C5000DDCE9B /* ViewController */,
+				CECBB76720F76C2600DDCE9B /* EditViewController */,
+				CEE1393A20F4C9D5005DC537 /* DetailViewController */,
 				CE66BBAB20F4116100B803DD /* MyFirstDBManager.h */,
 				CE66BBAC20F4116100B803DD /* MyFirstDBManager.m */,
 				CEB14F3320F44A1C00383CBE /* myTasks.db */,
@@ -155,6 +165,35 @@
 				CE66BBA820F410FA00B803DD /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CECBB76720F76C2600DDCE9B /* EditViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CE66BBAD20F4116100B803DD /* EditInfoViewController.h */,
+				CE66BBAA20F4116100B803DD /* EditInfoViewController.m */,
+			);
+			path = EditViewController;
+			sourceTree = "<group>";
+		};
+		CECBB76920F76C5000DDCE9B /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CE66BB7820F410E300B803DD /* ViewController.h */,
+				CE66BB7920F410E300B803DD /* ViewController.m */,
+				CEE1393B20F4CA1E005DC537 /* ViewControllerCell.h */,
+				CEE1393C20F4CA1E005DC537 /* ViewControllerCell.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CEE1393A20F4C9D5005DC537 /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CEE1393720F4B596005DC537 /* DetailViewController.h */,
+				CEE1393820F4B596005DC537 /* DetailViewController.m */,
+			);
+			path = DetailViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,10 +328,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE66BBAE20F4116100B803DD /* EditInfoViewController.m in Sources */,
+				CEE1393620F4A370005DC537 /* TableViewCell.m in Sources */,
 				CE66BBAF20F4116100B803DD /* MyFirstDBManager.m in Sources */,
 				CE66BB7A20F410E300B803DD /* ViewController.m in Sources */,
 				CE66BB8520F410E600B803DD /* main.m in Sources */,
 				CE66BB7720F410E300B803DD /* AppDelegate.m in Sources */,
+				CEE1393D20F4CA1E005DC537 /* ViewControllerCell.m in Sources */,
+				CEE1393920F4B596005DC537 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
